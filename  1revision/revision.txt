@@ -1,0 +1,436 @@
+# 1 find dublicate in array
+int main(){
+	int arr[]= {1, 2, 3,7, 1, 3, 6, 6 ,2 ,7};// yaha question me diya hain number 1 to n tak jayenge . 
+	int n = sizeof(arr)/sizeof(arr[0]);
+	for(int i=0 ; i<n ; i++){
+		arr[arr[i]%n]= arr[arr[i]%n] + n ;   // yahja array ko hash map ki tarh use kiya hain 
+		                                  // eg lata hun 1 ka pahli par  1+n store hoga  fir dusri bar jab 
+	}                                     // modulo operation lagayenge to 1+n+n store hoga 
+	for (int i=0 ; i<n ; i++){
+		 if (arr[i]>=2*n)
+			 cout<< i<< " ";
+		
+	}
+
+	return 0 ;
+}
+*********************************
+#2 find repeating messing no 
+void findmisrept(int a[] , int n ) {
+	sort(a , a + n);
+	int reptno = 0;
+	int j = 0;
+    int misno;
+	for (int i = 0; i < n-1 ; i++) {
+		
+		if (a[i] == a[i + 1]) {
+			reptno = a[i];
+			
+		}
+	}
+	for(int j =0 ; j<n ; j++){
+		if(a[j]!=j+1){  // agar ek beer mil gaya to break kar do ; j 0 se suru ho rahaa hain 
+			misno=j+1;  //
+			break;
+       }
+	}
+	cout<<"missing no is "<<misno<<endl; 
+	cout<<"reptno is "<< reptno;  
+	}
+    int main() {
+	int arr[] = { 7, 3,4,5,5, 2,1 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+	findmisrept(arr, n);
+
+	return 0;
+}
+****************************************************
+#3 repetinhg missing no method 2 
+void findmisndreptno(int a[] , int n ){
+	int dummy[n]={0};
+	// cout<<dummy[4]<<" ";
+	for(int i=0 ; i<n ; i++){
+		if(dummy[a[i]]==0){
+			dummy[a[i]]=dummy[a[i]] +1;
+		}
+		
+
+	}
+	for(int i=0; i<n ; i++){
+		if(dummy[i]>=1){
+			cout<<"repting no "<<a[i]<<" "; 
+		}
+		// if(dummy[i]==0){
+		// 	cout<<"missing no "<<dummy[i]<<endl; 
+		// }
+	}
+}
+eg int arr[] = { 7, 3,4,5,5, 2,1 };
+***************************
+# 4)merge overlapping intervals 
+struct  Interval
+{
+	int start ; 
+	int end; 
+};
+bool comapare(Interval l1 ,Interval l2 ){
+	return l1.start<l2.start; 
+}
+void mergeInterval(Interval a[] , int n ){
+	if(n==0){
+		return ; 
+	}
+
+	sort(a , a+n , comapare);
+    stack<Interval> s ;
+    Interval top ; 
+    s.push(a[0]);
+    // top =s.top();
+    for(int i=1 ; i<n ; i++){
+    	 top =s.top();   // stack me dal diya a[0] ka value 
+    	if(top.end>=a[i].start){
+    	                           // yaha overlap kar raha hain  eg  (1 ,5)(3,6)  yaha change kar do end value 
+    		                  // aur fir uske bad jo stack me hain use pop kar do .. fir fresh value stack me push kar do 
+    			top.end=a[i].end; 
+    			s.pop();
+    			s.push(top);
+    	}
+    	else if (top.end<a[i].start){
+    		
+    		
+    		s.push(a[i]);  // yaha overlap nahi katr raha hain fir  simople agle vale par chale jao ; 
+}
+
+      }
+    while(!s.empty()){
+    		cout<<s.top().start <<" "<< s.top().end<<" "; // yaha printr kar diya stack me sirf ek hi value hoga .
+    		s.pop();
+    	}
+}
+
+int  main(){
+	 Interval arr[] =  { {6,8}, {2,4}, {4,7} }; 
+    int n = sizeof(arr)/sizeof(arr[0]);
+    mergeInterval(arr , n );
+
+	return 0 ; 
+}
+*******************************************************
+
+2(5)..
+int stockbuyandsell(int a[] , int n ){
+	// int stock =0; 
+	int maxprof = 0;
+	int minnumber=INT_MAX; 
+	for(int i=0 ; i<n ; i++){
+		minnumber=  min(a[i] , minnumber);//  minmum nunber nikal lo 
+        maxprof= max(maxprof , (a[i]-minnumber));   // pichla jitna max profit tha wo ya aage me se hain unka max nikal lo        
+	}
+	return maxprof;
+}
+
+
+int main(){
+	 int price[] = { 100, 180, 260, 310,40, 535, 695 }; 
+    int n = sizeof(price) / sizeof(price[0]);
+     cout<<stockbuyandsell(price , n ); 
+********************************************************************************************************************************************
+ #  sliding window problem 
+int max_sumfinder(int a[] , int n  , int k ){
+	int sum =0 ; 
+	int max_sum ; 
+	if(n<k)
+		return -1;
+	for (int i=0 ; i<k ; i++)
+		sum = sum +a[i];
+	int window_sum =sum; 
+	for (int i =k ; i<n ; i++){
+		window_sum= window_sum +a[i]-a[i-k];  // yahha sliidin windoew us ehua hain 
+		max_sum = max(sum , window_sum);      // char ka pair hain ek add jar do aur pichla remove kar do 
+		// sum = window_sum; 
+
+	}
+	return max_sum;
+
+  
+	
+}
+
+int main(){
+	 int arr[] = { 1, 4, 2, 10, 2, 3, 1, 5 , 20 }; 
+    int k = 4; 
+    int n = sizeof(arr) / sizeof(arr[0]); 
+    cout << max_sumfinder(arr, n,k); 
+   
+    return 0; 
+*************************************************
+# sort an array of 0s 1s and 2s 
+void sortthearr(int a[], int n ){
+	int low , mid , heigh ;
+	low =0 ; 
+	mid =0 ; 
+	heigh= n-1 ; 
+	while(mid<=heigh) {
+		if(a[mid]==0){
+			swap(a[mid], a[low]);  // for mor detail se the below artical 
+			mid++ ; 
+			low++; 
+		}
+		else if(a[mid]==1){
+			mid++;
+		}
+		else
+		{
+			swap(a[mid] , a[heigh]);
+			heigh--;
+		}
+       }
+}
+int main(){
+	int arr[] = { 0, 1, 1, 0, 1, 2, 1, 2, 0, 0, 0, 1 }; 
+    int n = sizeof(arr) / sizeof(arr[0]); 
+    sortthearr(arr, n );
+    for(int i =0 ; i< n ; i++){
+    	cout<<arr[i]<<" "; 
+    }
+   return 0 ; 
+}
+**********************************
+##
+
+int findLongestConseqSubseq(int arr[], int n) 
+{ 
+    unordered_set<int> S; 
+    int ans = 0; 
+  
+    // Hash all the array elements 
+    for (int i = 0; i < n; i++) 
+        S.insert(arr[i]); 
+  
+    // check each possible sequence from 
+    // the start then update optimal length 
+    for (int i = 0; i < n; i++) { 
+        // if current element is the starting 
+        // element of a sequence 
+        if (S.find(arr[i] - 1) == S.end()) { 
+            // Then check for next elements 
+            // in the sequence 
+            int j = arr[i]; 
+            while (S.find(j) != S.end()) 
+                j++; 
+  
+            // update  optimal length if 
+            // this length is more 
+            ans = max(ans, j - arr[i]); 
+        } 
+    } 
+    return ans; 
+} 
+  
+// Driver program 
+int main() 
+{ 
+    int arr[] = { 1, 9, 3, 10, 4, 20, 2 }; 
+    int n = sizeof arr / sizeof arr[0]; 
+    cout << "Length of the Longest contiguous subsequence is "
+         << findLongestConseqSubseq(arr, n); 
+    return 0;                                    // o/p is 4 ;
+} 
+
+
+************************************************D.P*************
+dp1 ) :) edit distance 
+int min(int x, int y, int z) 
+{ 
+    return min(min(x, y), z); 
+} 
+  
+int editDistDP(string str1, string str2, int m, int n) 
+{ 
+    // Create a table to store results of subproblems 
+    int dp[m + 1][n + 1]; 
+  
+    // Fill d[][] in bottom up manner 
+    for (int i = 0; i <= m; i++) { 
+        for (int j = 0; j <= n; j++) { 
+            // If first string is empty, only option is to 
+            // insert all characters of second string 
+            if (i == 0) 
+                dp[i][j] = j; // Min. operations = j 
+  
+            // If second string is empty, only option is to 
+            // remove all characters of second string 
+            else if (j == 0) 
+                dp[i][j] = i; // Min. operations = i 
+  
+            // If last characters are same, ignore last char 
+            // and recur for remaining string 
+            else if (str1[i - 1] == str2[j - 1]) 
+                dp[i][j] = dp[i - 1][j - 1]; 
+  
+            // If the last character is different, consider all 
+            // possibilities and find the minimum 
+            else
+                dp[i][j] = 1 + min(dp[i][j - 1], // Insert 
+                                   dp[i - 1][j], // Remove 
+                                   dp[i - 1][j - 1]); // Replace 
+        } 
+    } 
+  
+    return dp[m][n]; 
+} 
+  
+// Driver program 
+int main() 
+{ 
+    // your code goes here 
+    string str1 = "sunday"; 
+    string str2 = "saturday"; 
+  
+    cout << editDistDP(str1, str2, str1.length(), str2.length()); 
+  
+    return 0; 
+} 
+***********************************8
+2.5 stock and buy 
+
+int stockbuyandsell(int a[] , int n ){
+	// int stock =0; 
+	int maxprof = 0;
+	int minnumber=INT_MAX; 
+	for(int i=0 ; i<n ; i++){
+		minnumber=  min(a[i] , minnumber);//  minmum nunber nikal lo 
+        maxprof= max(maxprof , (a[i]-minnumber));   // pichla jitna max profit tha wo ya aage me se hain unka max nikal lo        
+	}
+	return maxprof;
+}
+
+
+int main(){
+	 int price[] = { 100, 180, 260, 310,40, 535, 695 }; 
+    int n = sizeof(price) / sizeof(price[0]);
+     cout<<stockbuyandsell(price , n ); 
+
+******************************
+3.2 Pow(X,n)  
+ 
+ double myPow(double x, int n) {
+        long nn =n ;
+        double ans = 1.0 ; 
+        if(nn<0)                 // nn isliye liya bcz hum n ke value ko save rakhnaa chate hainn 
+            nn= -1*nn; // agar power -ve hua  to use +ve kar do  
+        while(nn>0){
+            if(nn%2){
+                ans=ans*x;  // matalab power odd hain 
+                n=n-1; 
+            }
+            else {
+                x=x*x;  // 5^4 is ko hum (5*5)^2 likh  sakte hain is liye ayese likha aysa karne se n ka value ko jata hain fir is se time comolexity  n se log(n) me convert ho jata hain 
+                nn=nn/2;  // or in other world hum kah sakte hain ki power ka value even hain 
+            }
+            
+        }
+        if(n<0){
+                ans = double (1.0)/double (ans);
+            }
+        return ans;
+    }
+********************
+3.3 mejority element grater than n/2 
+void findMajority(int arr[], int size) 
+{ 
+    unordered_map<int, int> m; 
+    //m[0] , m[1]..........likhte main to un sabhi ka value zero ayega .
+    for(int i = 0; i < size; i++) 
+        m[arr[i]]++;  // map me intial sabi key ka value value zero hota hain 
+       int count = 0; 
+    for(auto i : m) 
+    { 
+        if(i.second > 0) 
+        { 
+            count =1; 
+            cout << "Majority found :- " << i.first<<endl; 
+            break; 
+        } 
+    } 
+    if(count == 0) 
+        cout << "No Majority element" << endl; 
+} 
+  
+// Driver code  
+int main()  
+{  
+    int arr[] = {2, 2, 2, 2, 5, 5, 2, 3, 3 ,4};  
+    int n = sizeof(arr) / sizeof(arr[0]);  
+      
+    // Function calling  
+    findMajority(arr, n);  
+  
+    return 0;  
+}
+**********************************************************************************
+@ four sum problem 
+
+class Solution {
+public:
+	vector<vector<int>> fourSum(vector<int>& nums, int target) {
+		vector<vector<int>> vov;
+		if (nums.empty())
+			return vov;
+		sort(nums.begin() , nums.end());
+		int n = nums.size();
+		int low , end ;
+		for (int i = 0 ; i < n; i++) {
+			for (int j = i + 1 ; j < n ; j++) {
+				target2 = target - nums[i] - nums[j];
+				low = j + 1;
+				end = n - 1;
+				while (low < end) {
+					if (nums[low] + nums[end] < target2)low++;
+					else if (nums[low] + nums[end] > target2)end--;
+					else {
+						vector<int>dummy(4 , 0); // ek dummy vector 
+						dummy[0] = nums[i];     // le liya aur usko vov 
+						dummy[1] = nums[j];  
+						dummy[2] = nums[low];
+						dummy[3] = nums[end];
+						vov.push_back(dummy);
+						//here while loop iss usned to remove the dublicates
+						while (low < end && nums[low] == dummy[2])low++;
+						while (low < end && nums[end] == dummy[3])low--;
+
+					}
+
+				}
+				// yaha j wala  dublicate na aye 
+				while (j + 1 < n && nums[j + 1] == nums[j]) ++j;
+			}//yyaha i wala dublicate na aye . 
+			while (i + 1 < n && nums[i + 1] == nums[i])++i;
+		}
+		return vov;
+	}
+};  
+*********************************************************
+reverse pair 
+
+#include <bits/stdc++.h> 
+using namespace std; 
+void reversepair(int a[] , int n ){
+	int count =0 ; 
+	for(int i=0 ; i<n ; i++){
+		for(int j=0 ; j<n ; j++){
+			if(a[i]>2*a[j]&&j>i){
+				count = count+1 ; 
+			}
+		}
+	}
+	cout << count << endl ; 
+}
+int main(){
+	// int a[]= {1,3,2, 5,3,1};
+	int a[]= {2,4,3,5,1};
+	int n = sizeof(a)/sizeof(a[0]);
+	reversepair(a, n);
+	return 0; 
+}
+************************************************************

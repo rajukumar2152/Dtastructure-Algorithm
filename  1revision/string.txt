@@ -1,0 +1,416 @@
+  // note robin karb aur KMP algo anhi samjh aaya hain usko samjhna  hain aur ye  dono thore se important hain 
+
+q1 ) reverse a word in a string 
+ #include <bits/stdc++.h>
+using namespace std;
+
+// Function to reverse words*/
+void reverseWords(string& s)
+{
+	int start = 0 ;
+	for (int end = 0 ; end < s.length(); end++) {
+		if (s[end] == ' ') {
+			reverse(s.begin() + start , s.begin() + end); // yah sare word reverse ho jayenge except the laste word
+			start = end + 1;
+		}
+	}
+	reverse(s.begin() + start , s.end()); //yaha last element tak jayega program
+	reverse(s.begin() , s.end()); // yaha pure string ko hi reverse kar diya
+
+}
+
+// Driver Code
+int main()
+{
+	string s = "i like this program very much";
+	reverseWords(s);
+	cout << s;
+	return 0;
+}
+ // o/p = much very program this like i
+********************************************************************************************************************
+
+// A C++ dynamic programming
+// solution for longest palindrome
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Function to print a substring
+// str[low..high]
+void printSubStr(string str, int low, int high)
+{
+	for (int i = low; i <= high; ++i)
+		cout << str[i];
+}
+
+// This function prints the
+// longest palindrome substring
+// It also returns the length of
+// the longest palindrome
+int longestPalSubstr(string str)
+{
+	// get length of input string
+	int n = str.size();
+
+	// table[i][j] will be false if substring
+	// str[i..j] is not palindrome.
+	// Else table[i][j] will be true
+	bool table[n][n];
+
+	memset(table, 0, sizeof(table));
+
+	// All substrings of length 1
+	// are palindromes
+	int maxLength = 1;
+
+	for (int i = 0; i < n; ++i)
+		table[i][i] = true;
+
+	// check for sub-string of length 2.
+	int start = 0;
+	for (int i = 0; i < n - 1; ++i) {
+		if (str[i] == str[i + 1]) {
+			table[i][i + 1] = true;
+			start = i;
+			maxLength = 2;
+		}
+	}
+
+	// Check for lengths greater than 2.
+	// k is length of substring
+	for (int k = 3; k <= n; ++k) {
+		// Fix the starting index
+		for (int i = 0; i < n - k + 1; ++i) {
+			// Get the ending index of substring from
+			// starting index i and length k
+			int j = i + k - 1;
+                                                                           
+			// checking for sub-string from ith index to
+			// jth index iff str[i+1] to str[j-1] is a
+			// palindrome
+			if (table[i + 1][j - 1] && str[i] == str[j]) {  
+				table[i][j] = true;
+
+				if (k > maxLength) {
+					start = i;
+					maxLength = k;
+				}
+			}
+		}
+	}
+
+	cout << "Longest palindrome substring is: ";
+	printSubStr(str, start, start + maxLength - 1);
+
+	// return length of LPS
+	return maxLength;
+}
+
+// Driver Code
+int main()
+{
+	string str = "forgeeksskeegfor";
+	cout << "\nLength is: "
+		<< longestPalSubstr(str);
+	return 0;
+}
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+   STRING KE AUR BHI SWAL JAIN LIKE LCS , PALINDROME ETC SEE DP FOLDER 
+*************************************************************************************
+QUES) LONGEST COMMON PREFIX
+
+// A C++ Program to find the longest common prefix 
+#include<bits/stdc++.h> 
+using namespace std; 
+
+// A Utility Function to find the common prefix between 
+// strings- str1 and str2 
+string commonPrefixUtil(string str1, string str2) 
+{ 
+	string result; 
+	int n1 = str1.length(), n2 = str2.length(); 
+
+	// Compare str1 and str2 
+	for (int i=0, j=0; i<=n1-1&&j<=n2-1; i++,j++) 
+	{ 
+		if (str1[i] != str2[j]) 
+			break;      // jab wqual nahi hain to brek kar 
+		result.push_back(str1[i]); // other wise result me push karte jaooo
+	} 
+
+	return (result); 
+} 
+
+// A Function that returns the longest common prefix 
+// from the array of strings 
+string commonPrefix (string arr[], int n) 
+{ 
+	string prefix = arr[0]; 
+
+	for (int i=1; i<=n-1; i++) 
+		prefix = commonPrefixUtil(prefix, arr[i]);  //ek ka common nikal lo chek aro dusre me se kitna common hain 
+
+	return (prefix); 
+} 
+
+// Driver program to test above function 
+int main() 
+{ 
+	string arr[] = {"geeksforgeeks", "geeks", 
+					"geek", "geezer"}; 
+	int n = sizeof(arr) / sizeof(arr[0]); 
+
+	string ans = commonPrefix(arr, n); 
+
+	if (ans.length()) 
+		printf ("The longest common prefix is - %s", 
+				ans.c_str()); 
+	else
+		printf("There is no common prefix"); 
+
+	return (0); 
+} 
+//O/P gee
+
+######################################################################################### 
+   ROBIN KARP SAMJH NAHI AYYA 
+
+ALGO SAMJH NAHI AYA HAIN 
+
+
+
+
+*****************************************
+Q Z aalgorithm 
+// A C++ program that implements Z algorithm for pattern searching
+#include<iostream>
+using namespace std;
+
+void getZarr(string str, int Z[]);
+
+// prints all occurrences of pattern in text using Z algo
+void search(string text, string pattern)
+{
+	// Create concatenated string "P$T"
+	string concat = pattern + "$" + text;
+	int l = concat.length();
+
+	// Construct Z array
+	int Z[l];
+	getZarr(concat, Z);
+
+	// now looping through Z array for matching condition
+	for (int i = 0; i < l; ++i)
+	{
+		// if Z[i] (matched region) is equal to pattern
+		// length we got the pattern
+		if (Z[i] == pattern.length())
+			cout << "Pattern found at index "
+			     << i - pattern.length() - 1 << endl;
+	}
+}
+
+// Fills Z array for given string str[]
+void getZarr(string str, int Z[])
+{
+	int n = str.length();
+	int L, R, k;
+
+	// [L,R] make a window which matches with prefix of s
+	L = R = 0;
+	for (int i = 1; i < n; ++i)
+	{
+		// if i>R nothing matches so we will calculate.
+		// Z[i] using naive way.
+		if (i > R)
+		{
+			L = R = i;
+
+			// R-L = 0 in starting, so it will start
+			// checking from 0'th index. For example,
+			// for "ababab" and i = 1, the value of R
+			// remains 0 and Z[i] becomes 0. For string
+			// "aaaaaa" and i = 1, Z[i] and R become 5
+			while (R < n && str[R - L] == str[R])
+				R++;
+			Z[i] = R - L;
+			R--;
+		}
+		else
+		{
+			// k = i-L so k corresponds to number which
+			// matches in [L,R] interval.
+			k = i - L;
+
+			// if Z[k] is less than remaining interval
+			// then Z[i] will be equal to Z[k].
+			// For example, str = "ababab", i = 3, R = 5
+			// and L = 2
+			if (Z[k] < R - i + 1)
+				Z[i] = Z[k];
+
+			// For example str = "aaaaaa" and i = 2, R is 5,
+			// L is 0
+			else
+			{
+				// else start from R and check manually
+				L = i;
+				while (R < n && str[R - L] == str[R])
+					R++;
+				Z[i] = R - L;
+				R--;
+			}
+		}
+	}
+}
+
+// Driver program
+int main()
+{
+	string text = "GEEKS FOR GEEKS";
+	string pattern = "GEEK";
+	search(text, pattern);
+	return 0;
+}
+//o/p
+//Pattern found at index 0
+//Pattern found at index 10
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$4
+ QUESTION :- Minimum characters needed to be inserted in the beginning to make it palindromic. 
+
+#include <bits/stdc++.h>
+using namespace std;
+
+bool ispalindrome(string s) {
+	int l = s.length();
+	int j;
+	for (int i = 0 , j = l - 1 ; i <= j  ; i++ , j--) { /// sahi run kar raha hain
+		if (s[i] != s[j])
+			return false ;
+
+	}
+	return true ;
+}
+int main() {
+	string s = "BABABAAk";
+	int count = 0 ;
+	int flag = 0 ;
+	while (s.length() > 0) {
+		if (ispalindrome(s)) {
+			flag = 1 ;
+			break ;
+		}
+		else
+		{
+			count = count + 1 ;   //last element ka index
+			s.erase(s.begin() + s.length() - 1 );// s.erase(2) is se second element
+			//erase ho jayega
+		}
+
+	}
+	if (flag)
+		cout << count;
+	return 0 ;
+}
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+QUESTION :- CHECK THE ALANGRAM 
+     #include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+	string s1 = "LISTEN";
+	string s2 = "SILENT";
+	sort(s1.begin() , s1.end());// sort kar do dono string ko aur fir loop
+	sort(s2.begin(), s2.end()); // laa kar check kaaar do
+	int l = s1.length();
+	int count = 0 ;
+	for (int i = 0 ; i < l ; i++) {
+		if (s1[i] == s2[i])
+			count++;
+	}
+	if (count == s1.size())  // agar count ka value s1 ke size ke barabar aata hain to alngram hain
+		cout << "strings are alangram of each another ";
+	else
+		cout << "not alangram";
+
+	cout << endl ;
+	cout << s1 << endl;
+	cout << s2 << endl ;
+	return 0 ;
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+QUESTION  Count and Say 
+#include <bits/stdc++.h>
+using namespace std;
+
+string countandsay(int n ) {
+
+	if (n == 1)
+		return "1"; // base case
+	if (n == 2)
+		return "11"; // base case
+	// string temp = "11" + '&';
+	string str = "11"; // str ko inatialize kar diya
+	int count = 1 ;
+	for (int i = 3 ; i <= n ; i++) {
+		string  temp = ""; // temp ko khaili kar diya // loop khatam hone ke bad dubaa yaha ayenge to string khali milega
+		str = str + '&'; // ek extra char liya taki  n ko bhi include kar le
+		// string  str = "";
+
+		int l = str.size();
+		for (int j = 1 ; j < l ; j++) {
+			if (str[j] != str[j - 1]) { // agar match nahi hua to  uska cont aur wo char ko push kar do temp me
+				temp = temp + to_string(count);//  count ek integer hain to_string usko string me kar dega
+				temp = temp + str[j - 1];
+				//temp = str ;
+				count = 1 ; // yaha count ka value 1 kar diya
+			}
+			else
+				count = count + 1; // agr match kkar raha hain to count badate jaoo
+		}
+		str = temp; // yaha updat kar diya string ko
+
+	}
+	return str ;
+}
+
+int  main() {
+	
+	cout << countandsay(4);
+	return 0 ;
+}
+// O/P // example
+// Input: n = 3
+// Output: 21
+
+// Input: n = 5
+// Output: 111221
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#include <bits/stdc++.h> 
+using namespace std; 
+
+
+int main(){
+	string version1 = "1.0.3"; 
+    string version2 = "1.0.7"; 
+    int l = version2.length();
+    int b ; 
+    for(int i=0 ; i<l ; i++){
+    	if(version1[i]!=version2[i])
+    		b = i ; 
+    }
+    if(version1[b]>version2[b]){
+    	cout<< " version1 is greater ";
+    }
+    else 
+    	cout<<  "version2 is greater " <<version2; 
+  
+
+
+	return 0 ; 
+}
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@

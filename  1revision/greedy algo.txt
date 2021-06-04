@@ -1,0 +1,160 @@
+(1) job sequences 
+// Program to find the maximum profit job sequence from a given array 
+// of jobs with deadlines and profits 
+#include<iostream> 
+#include<algorithm> 
+using namespace std; 
+
+// A structure to represent a job 
+struct Job 
+{ 
+char id;	 // Job Id 
+int dead; // Deadline of job 
+int profit; // Profit if job is over before or on deadline 
+}; 
+
+// This function is used for sorting all jobs according to profit 
+bool comparison(Job a, Job b) 
+{ 
+	return (a.profit > b.profit); 
+} 
+
+// Returns minimum number of platforms reqquired 
+void printJobScheduling(Job arr[], int n) 
+{ 
+	// Sort all jobs according to decreasing order of prfit 
+	sort(arr, arr+n, comparison); 
+
+	int result[n]; // To store result (Sequence of jobs) 
+	bool slot[n]; // To keep track of free time slots 
+
+	// Initialize all slots to be free 
+	for (int i=0; i<n; i++) 
+		slot[i] = false; 
+
+	// Iterate through all given jobs 
+	for (int i=0; i<n; i++) 
+	{ 
+	// Find a free slot for this job (Note that we start 
+	// from the last possible slot) 
+	for (int j=min(n, arr[i].dead)-1; j>=0; j--)  // agar dedlime n se jyda hua to hum n lenge .
+	{ 
+		// Free slot found 
+		if (slot[j]==false) 
+		{ 
+			result[j] = i; // Add this job to result 
+			slot[j] = true; // Make this slot occupied 
+			break; 
+		} 
+	} 
+	} 
+
+	// Print the result 
+	for (int i=0; i<n; i++) 
+	if (slot[i]) 
+		cout << arr[result[i]].id << " "; 
+} 
+// Driver code 
+int main() 
+{ 
+	Job arr[] = { {'a', 2, 100}, {'b', 1, 19}, {'c', 2, 27}, 
+				{'d', 1, 25}, {'e', 3, 15}}; 
+	int n = sizeof(arr)/sizeof(arr[0]); 
+	cout << "Following is maximum profit sequence of jobs \n"; 
+	
+	// Function call 
+	printJobScheduling(arr, n); 
+	return 0; 
+} 
+
+***************************************************************************************
+2 )min coin greedy approach 
+ void jobseq(job  arr[], int n ) {
+	int result[n];
+	bool stock[n];
+	sort(arr, arr + n , compare); // isse decending order me arrange ho gaya
+
+
+	for (int i = 0; i < n ; i++) {
+		stock[i] = false; // stock me jo array le lenge usko change kar denge .
+	}
+	for (int i = 0 ; i < n ; i++) {
+		for (int j = min(n, arr[i].dead); j >= 1 ; j--) {
+			if (stock[j] == false ) {
+				stock[j] = true; // agar if condition true hota hain loop break ho jayega;
+				result[j] = i;  // jiski dedline jyda hain uska stack flag true ho jayega ..
+				/// result array ka index store karne ka kam kar raha hain
+				break ;
+			}
+		}
+	}
+	for (int k = 0; k < n; k++) {
+		if (stock[k] == true) {
+			cout << arr[result[k]].id << " ";
+		}
+	}
+}
+int main()
+{
+	//job arr[5]={{'a' ,2,200},{'b',1,30},{'c',1,23},{'d', 1, 25}, {'e', 3, 15}};
+	job arr[5] = { {'a', 2, 100}, {'b', 1, 19}, {'c', 2, 27}, {'d', 1, 30}, {'e', 3, 15}};
+	jobseq(arr, 5);
+	cout << "hello  world ";
+
+	return 0 ;
+}
+o/p 1000 1000 1000 1000 1000 1000 500 20 10 5 1  //thora sa code chang kar ke 11 answer la sakte hain 
+**********************************************************************************************************
+3) N meeting in a room 
+
+struct  mettting
+{
+	int start ;  // yaha sruct meeting banaie hain
+	int end ;
+	int pos ;
+};
+
+bool compare(mettting m1 , mettting m2) {
+	return (m1.end < m2.end);
+}
+
+
+void maxmeet(int s[], int f[] , int n )
+{
+	struct  mettting milgaye[n];  // sruct meeting ke help se array banaya hain
+	// isme tin cheez hain
+	for (int i = 0 ; i < n ; i++) {
+		milgaye[i].start = s[i];  // yaha milgaya arrray ko frll kar rahe hain
+		milgaye[i].end = f[i];
+		milgaye[i].pos = i + 1;
+	}
+	sort(milgaye , milgaye + n , compare); // yaha  finish time ke hisab se sort kiya hain
+	vector<int> v;
+	v.push_back(milgaye[0].pos); // yaha vector me position push kar diya hain
+	int timelimit = milgaye[0].end;
+	for (int i = 1 ; i < n ; i++) {
+		if (milgaye[i].start > timelimit) { // 1 index se start kiya
+			v.push_back(milgaye[i].pos); // agar starting time pichle wale finsh(timelimit)
+			timelimit = milgaye[i].end;   //se jyda hain to vector me position push kar do
+		}
+
+	}
+	for (auto i : v) {
+		cout << i << " ";  // yaha print kar diya jo vector me push hua the
+	}
+}
+int main() {
+	int s[] = { 1, 3, 0, 5, 8, 5 };
+
+	// Finish time
+	int f[] = { 2, 4, 6, 7, 9, 9 };
+
+	// Number of meetings.
+	int n = sizeof(s) / sizeof(s[0]);
+	maxmeet(s, f , n );
+
+	return 0 ;
+}
+o/p 1 2 4 5  (ye position wale metting possible hain)
+*****************************************************************************************************************************
+
