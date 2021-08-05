@@ -1,0 +1,213 @@
+1 implimate stack from queue 
+class Stack {
+	queue<int> q1, q2;
+	int current_size ;
+
+public:
+	Stack() {
+		current_size = 0 ;
+	}
+
+	void push (int x ) {
+		q1.push(x);
+
+		// int temp = q1.front();
+		// q2.push(temp);
+		int temp;
+		while (!q1.empty()) {
+
+			temp = q1.front();
+			q2.push(temp);
+			q1.pop();
+
+		}
+	}
+};
+#########################################################################33
+232. Implement Queue using Stacks
+class MyQueue {
+public:
+    /** Initialize your data structure here. */
+    stack<int> s1,s2;
+    MyQueue() {
+        
+    }
+    
+    /** Push element x to the back of queue. */
+    void push(int x) {
+        s1.push(x);
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    int pop() {
+        while(!s1.empty()){
+            s2.push(s1.top());
+            s1.pop();
+        }
+        int a=s2.top();
+        s2.pop();
+        while(!s2.empty()){
+            s1.push(s2.top());
+            s2.pop();
+        }
+        return a;
+    }
+    
+    /** Get the front element. */
+    int peek() {
+        while(!s1.empty()){
+            s2.push(s1.top());
+            s1.pop();
+        }
+        int a=s2.top();
+
+        while(!s2.empty()){
+            s1.push(s2.top());
+            s2.pop();
+        }
+        return a;
+    }
+    
+    /** Returns whether the queue is empty. */
+    bool empty() {
+        if(s1.empty()){
+            return true;
+        }
+        return false;
+    }
+};
+###########################################################
+Post fix expression 
+class Solution   // IITS RUNNING CURRETLY
+{
+public:
+	bool isOperand(string x)     // this use to find whre it operand or notn
+	{
+		if (x == "+" || x == "-" || x == "*" || x == "/")
+		{
+			return true;
+		}
+		return false;
+	}
+
+	int operation(string op, int x, int y)
+	{
+		if (op == "+") // operation function use to find kon sa operation use karna
+		{	// yaha hum stl ka use karne se bach jaa rahe hainn
+			return x + y;
+		}
+		else if (op == "-")
+		{
+			return x - y;
+		}
+		else if (op == "*")
+		{
+			return x * y;
+		}
+		else if (op == "/")
+		{
+			return x / y;
+		}
+		return -1;
+	}
+
+	int evalRPN(vector<string>& a)
+	{
+		stack<int> stk;
+		int n = a.size();
+		int x = 0, y = 0, result = 0;
+		for (int i = 0; i < n; i++)
+		{
+			if (!isOperand(a[i]))
+			{	// aga operand nahi  hain to push kar to stk
+				stk.push(stoi(a[i]));  // after converting iunto the integer  bcz we takr stk of integer type
+				// stoi is used to convert string into an integer
+			}
+			else
+			{
+				y = stk.top(); //   first two top element ke ler lo fir us par opertion performn kar do
+				stk.pop();
+				x = stk.top();
+				stk.pop();
+				result = operation(a[i], x, y);
+				stk.push(result);  /// result ko stk me push kar do
+			}
+		}
+		int sol = stk.top();
+		stk.pop();
+		return sol;
+	}
+};
+Input: tokens = ["2","1","+","3","*"] or 21+3*  postfix ki tarh computer me add wager wala aadd hota hain 
+Output: 9
+Explanation: ((2 + 1) * 3) = 9
+###################################################################
+Balance paranthesiis 
+class Solution {
+public:
+    bool isValid(string s) {
+        int len=s.length();
+        stack<char> sta;
+        char temp;   
+        for(int i=0;i<len;i++){  // push all the openong paranthesis to a stack
+            if(s[i]=='(' || s[i]=='[' || s[i]=='{'){
+                sta.push(s[i]);
+            }
+            
+            else if((s[i]=='}' || s[i]==']' || s[i]==')')){
+                if(sta.empty())     // when all are closing partheses  in the string like  )}] sso                           //stack me kuch  bhi push hi nahi hoga 
+                    return false; // heere return false 
+                else{
+                    temp=sta.top();   // now check here one by one  s[i] and top of the stack 
+                    if(s[i]==')' && temp=='(')
+                        sta.pop();   // if matched the pop the stack 
+                    else if(s[i]=='}' && temp=='{')
+                        sta.pop();
+                    else if(s[i]==']' && temp=='[')
+                        sta.pop();
+                    else
+                        return false;  //  see this case "(])"
+                }
+            }
+        }
+        if(!sta.empty())
+            return false;
+        else
+            return true;
+    }
+};
+Input: s = "()[]{}"
+Output: true
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&&&&&&&&&&&&&&&&&&&&&&&&&&&&7777
+32. Longest Valid Parentheses
+class Solution {
+public:
+    int longestValidParentheses(string s) {
+        int n = s.length(), longest = 0;
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            if (s[i] == '(') st.push(i);
+            else {
+                if (!st.empty()) {
+                    if (s[st.top()] == '(') st.pop();
+                    else st.push(i);
+                }
+                else st.push(i);
+            }
+        }
+        if (st.empty()) longest = n;
+        else {
+            int a = n, b = 0;
+            while (!st.empty()) {
+                b = st.top(); st.pop();
+                longest = max(longest, a-b-1);
+                a = b;
+            }
+            longest = max(longest, a);
+        }
+        return longest;
+    }
+};
+Input: s = ")()())"
+Output: 4
+Explanation: The longest valid parentheses substring is "()()".

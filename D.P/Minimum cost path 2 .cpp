@@ -55,3 +55,36 @@ int main() {
 	}
 	return 0;
 }  // } Driver Code Ends
+
+
+
+//LEETCODE
+// 64. Minimum Path Sum
+
+// BILKUL SAHI RUN KAR RAHA HAIN
+class Solution {
+public:
+
+	int minPathSum(vector<vector<int>>& grid) {
+		int row = grid.size() ;  // is se row pata chal jayega
+		int column = grid[0].size() ;  // isss se column pata chal jayega
+
+		int  dp[row][column] ;
+		dp[0][0] = grid[0][0] ;  // first ko fill kar do
+		for (int j = 1 ; j < column ; j++) {
+			dp[0][j] = dp[0][j - 1] + grid[0][j] ;  // loop laha first row and first
+		}                         // colun ko fill kar do
+		for (int i = 1 ; i < row ; i++) {
+			dp[i][0] = dp[i - 1][0] + grid[i][0] ;
+		}
+
+		for (int i = 1 ; i < row ; i++) {   // bakio ko liye  chek ko min of left wala ya
+			for (int j = 1 ; j < column ; j++) {  // right wala
+				dp[i][j]  = grid[i][j] + min(dp[i - 1][j] , dp[i][j - 1]);
+			}
+		}
+
+		return dp[row - 1][column - 1] ;
+	}
+
+};

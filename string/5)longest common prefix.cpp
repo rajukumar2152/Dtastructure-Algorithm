@@ -1,4 +1,75 @@
+// LEETCODE SOLUTION
+class Solution {
+public:
+	string longestCommonPrefix(vector<string>& strs)
+	{
+		//strRef is the first string
 
+		string strRef = strs[0];
+		int mi = INT_MAX;
+
+		if (strs.size() == 0)
+			return "";
+
+		//to traverse 2nd string to last string and compare it with the first string
+
+		for (int i = 1; i < strs.size(); i++)
+		{
+			int j = 0, k = 0, a = 0;
+			//j is the size of first string, k is the size of i-th string, a is the size of commom prefix
+
+			while (j < strRef.size() && k < strs[i].size())
+			{
+				if (strRef[j] == strs[i][j])
+					a++;
+				else
+					break;
+
+				j++;
+				k++;
+			}
+//this is the length of substring that is common for all the strings in vector
+
+			mi = min(mi, a);
+		}
+		return strRef.substr(0, mi);
+	}
+};
+
+//////////////////////////////////
+// 14. Longest Common Prefix
+// Easy
+
+// 4588
+
+// 2318
+
+// Add to List
+
+// Share
+// Write a function to find the longest common prefix string amongst an array of strings.
+
+// If there is no common prefix, return an empty string "".
+
+
+
+// Example 1:
+
+// Input: strs = ["flower","flow","flight"]
+// Output: "fl"
+// Example 2:
+
+// Input: strs = ["dog","racecar","car"]
+// Output: ""
+// Explanation: There is no common prefix among the input strings.
+
+
+// Constraints:
+
+// 1 <= strs.length <= 200
+// 0 <= strs[i].length <= 200
+// strs[i] consists of only lower-case English letters.
+///////////////////////////////////////////
 // thodi di dikkat aa rahi hain  pata nahi kyun
 #include <bits/stdc++.h>
 using namespace std;

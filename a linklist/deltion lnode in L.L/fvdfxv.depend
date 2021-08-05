@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1584887676 source:c:\users\laptop\desktop\fvdfxv\main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<iostream>
+

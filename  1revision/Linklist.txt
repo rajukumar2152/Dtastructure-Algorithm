@@ -1,0 +1,458 @@
+1) Linklist implementation 
+#include <iostream>
+
+using namespace std;
+struct Node
+{
+  int data ;
+  Node* next;  // iska matlab yah hain ki next pointer to node hain
+                        //node  ek structure hain iss case main .
+} ;
+
+void printlist(Node* n )
+{
+    while (n!=NULL)        //
+    {
+        cout<<n->data <<"  ";   /// isko bad me dekhna hain
+        n= n->next ;
+    }
+}
+
+int main()
+{
+
+    Node* head = NULL;   // head pointer to node structure   hain  jiska valu hamne  null hai yaha
+    Node*first = NULL;
+    Node*second =NULL;
+    Node*third = NULL;
+    //allocate three node in the heap
+    head = new Node();
+    first = new Node();
+    second = new Node();
+    third = new Node ();
+
+
+    head->data = 2;
+    head-> next= first ;
+
+    first->data= 4;
+    first->next = second ;
+
+    second -> data = 6;
+    second -> next = third;
+
+    third->data = 10;
+    third->next=NULL;
+
+
+    printlist(head ); // function call kiya hain yaha
+
+    return 0;
+}
+
+##################################################3
+ ->> Left view of linklist 
+int maxh = 0 ;
+vector<int> v;
+void leftView_helper(Node *root , int h  ) {
+//  vector<int> v ;
+  if (root == NULL) {
+    return ;
+  }
+  if (h > maxh) {
+    v.push_back(root->data);
+    maxh = h ;
+  }
+
+  leftView_helper(root->left , h + 1);
+  leftView_helper(root->right , h + 1);
+
+}
+
+vector<int> leftView(Node *root)
+{
+  leftView_helper(root , 1 );
+  return v ;
+
+
+}
+#############################################
+q->>> merge two linklist 
+void  merge(Node* a , Node* b ) {
+  Node* temp = newNode(0);
+  // ek temp node panaya aur ussme 0 put kar diya
+  Node* res = temp;  // res node isliye banaya taki hum temp list ka head ko point kar sake
+  while (a != NULL && b != NULL) {
+    if (a->data < b->data) {
+      temp->next = newNode(a->data); // agar a chota hua to temp list me a->data jayega
+      temp = temp->next;
+
+      a = a->next;
+    } else {                       // otherwise b ka data jayega
+      temp->next = newNode(b->data);
+      temp = temp->next ;
+      b = b->next ;
+    }
+  }
+
+  if (a->next != NULL) {
+    temp->next = a->next; // agr b khtam ho gaya to temp ke next ko a ke next se link kar do
+  } else {
+    temp->next = b->next ;
+  }
+  print(res->next) ;  // yaha res->nex liya bcz temp list ka head yahi se staert ho taha hain
+}
+
+##############################################33
+Q)-->> Addition of two linklist 
+struct  Node
+{
+	int data ;
+	struct Node* next;
+
+};
+void print(Node* head) {
+	while (head != NULL) {
+		cout << head->data << " ";
+		head = head->next;
+	}
+}
+Node* newNode(int key)
+{
+	Node* temp = new Node;
+	temp->data = key;
+	temp->next = NULL;
+	return temp;
+}
+void add(Node* a , Node* b) {
+	Node* temp = newNode(0);
+	Node* res = temp;
+	int c = 0 ;
+
+	while (a->next != NULL && b->next != NULL) {
+		int sum = a->data + b->data + c;
+		// temp->next= newNode()
+		c = 0 ;
+		if (sum > 9) {
+			temp->next = newNode(sum % 10);
+
+			c = sum / 10;
+
+
+		} else {
+			temp->next = newNode(sum);
+		}
+		a = a->next ;
+		b = b->next ;
+		// cout<<temp->data<<" ";
+		temp = temp->next;
+
+	}
+	int k;
+	int  carry = 0 ;
+	if (a->next != NULL) {
+		k = a->data + b->data + c;
+		// carry=0 ;
+		if (k > 9) {
+			temp->next = newNode(k % 10);
+			carry = k / 10 ;
+			temp->next = a->next;
+
+		} else {
+			temp->next = newNode(k);
+			temp->next = a->next ;
+		}
+
+	}
+	else {
+		k = a->data + b->data;
+		if (k > 9) {
+			temp->next = newNode(k % 10);
+			carry = k / 10 ;
+			temp = temp->next ;
+			temp->next = b->next;
+
+		} else {
+			temp->next = newNode(k);
+			temp->next = b->next ;
+		}
+
+	}
+
+	print(res);
+}
+######################################################################################
+reverse a linklist 
+void reverse(Node * head) {
+    Node* a = NULL ; //ye pichla adress store karega
+    Node* b = head ; // ye present adress store karega
+    Node* c = NULL ; /// ye present ke agle wale ka adress store karega
+    while (b != NULL) {
+        c = b->next;
+        b->next = a;
+        a = b;
+        b = c;
+        // a=a->next;
+    }
+
+    print (a) ;
+}
+
+Node* newNode(int key)
+{
+    Node* temp = new Node;
+    temp->data = key;
+    temp->next = NULL;
+    return temp;
+}
+#################################################
+            Love BABBER SHEET  
+###################### 
+
+ 7 ->>   143. Reorder List 
+class Solution {
+public:
+	void reorderList(ListNode* head) {
+		if ((!head) || (!head->next) || (!head->next->next)) return; // Edge cases
+		stack<ListNode*> all_node ;
+		int size = 0 ;
+		ListNode* dummy = head ;
+		while (head != nullptr) {
+			all_node.push(head);  //stack me sare value of node dal diyaa hamne
+			size++ ;
+			head = head->next ;
+		}
+		for (int i = 0 ; i < size / 2 ; i++ ) {
+			ListNode* ptr_from_last = all_node.top() ;
+			all_node.pop();//yaja pop kar diya
+			ptr_from_last->next = dummy->next ; // lst ptr ke next me second wale address dal diya hain
+			// and so on............
+			dummy->next = ptr_from_last;
+
+			dummy = dummy->next->next ;
+
+		}
+		dummy->next = nullptr ;
+
+
+	}
+};
+
+// 143. Reorder List
+
+// Share
+// You are given the head of a singly linked-list. The list can be represented as:
+
+// L0 → L1 → … → Ln - 1 → Ln
+// Reorder the list to be on the following form:
+
+// L0 → Ln → L1 → Ln - 1 → L2 → Ln - 2 → …
+// You may not modify the values in the list's nodes. Only nodes themselves may be changed.
+
+
+
+// Example 1:
+
+
+// Input: head = [1,2,3,4]
+// Output: [1,4,2,3]
+
+
+// Input: head = [1,2,3,4,5]
+// Output: [1,5,2,4,3]
+
+#####################################
+83. Remove Duplicates from Sorted List
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+	ListNode* deleteDuplicates(ListNode* head) {
+		if (head == NULL)
+			return head ;
+		else {
+			ListNode* prev , current ;
+			prev = head ;
+			current = head->next ;
+			while (current != nullptr) {
+				if (prev->val != current->val) {
+					prev->next = current ;
+					prev = prev->next ;
+					current = current->next ;
+				} else {
+					current = current->next  ;
+				}
+			}
+			prev->next = NULL ;
+		}
+		return head ;
+	}
+};
+
+
+
+
+
+
+328. Odd Even Linked List
+class Solution {
+public:
+	ListNode* oddEvenList(ListNode* head) {
+		if (head == NULL)
+			return head ;
+		else {
+			ListNode* odd , even   , evenHead ;
+			odd = head   ;
+			even = head->next  ;
+			evenHead = even ;
+			while (even != NULL && even->next != NULL) {
+				odd->next = odd->next->next ;
+				odd = odd->next ;
+				even->next = even->next->next ;
+				even = even->next ;  // even wala itrate karte karte odd ko point karne
+				// lagega waha se even ka ya even->next NULL ho sakta hain
+			}
+			odd->next = evenHead ;
+			return head ;
+		}
+
+	}
+};
+// 328. Odd Even Linked List
+// Medium
+
+// Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list.
+
+// The first node is considered odd, and the second node is even, and so on.
+
+// Note that the relative order inside both the even and odd groups should remain as it was in the input.
+
+// You must solve the problem in O(1) extra space complexity and O(n) time complexity.
+
+
+
+// Example 1:
+
+
+// Input: head = [1,2,3,4,5]
+// Output: [1,3,5,2,4]
+// Example 2:
+
+
+// Input: head = [2,1,3,5,6,4,7]
+// Output: [2,3,6,7,1,5,4]
+
+****************************************************************************************
+// 92. Reverse Linked List II
+class Solution {
+public:
+	ListNode* reverseBetween(ListNode* head, int left, int right) {
+		if (head == NULL)
+			return NULL  ;
+		else {
+			ListNode * dummy = new ListNode(0) ;
+			dummy->next = head ;
+			ListNode* prev = dummy ;
+			ListNode* start  ;
+			ListNode* then ;
+
+			for (int i = 0 ; i < left - 1 ; i++) {
+				prev = prev->next ;
+
+
+			}
+			for (int i = 0 ; i < right ; i++) {        // run time errror aa  raha hain
+				start->next = then->next;
+				then->next = prev->next;
+				prev->next = then;
+				then = start->next ;
+
+			}
+			return dummy->next ;
+		}
+
+	}
+};
+
+// 92. Reverse Linked List II
+// Medium
+
+// Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
+
+// Example 1:
+
+// Input: head = [1,2,3,4,5], left = 2, right = 4
+// Output: [1,4,3,2,5]
+// Example 2:
+
+// Input: head = [5], left = 1, right = 1
+// Output: [5]
+
+
+****************************************************************************** * * * * * * 8
+148. Sort List
+class Solution {
+public:
+	ListNode * l1 ;
+	ListNode * l2 ;
+	ListNode* sortList(ListNode* head) {
+		if (head == NULL && head->next = NULL)
+			return head ;                 // hal me divide  kar do LL
+		else {
+			ListNode* slow = head ;   // this is the reason wgy we use slow and fast ptr
+			ListNode* fast = slow ;
+
+			while (fast != NULL && fast->next != NULL ) {
+				slow = slow->next ;
+				fast = fast->next->next ;
+			}
+			fast = slow->next ;   // ye dekh ek bar slow and fast ptr mil gaya to
+			slow->next = NULL ;    //  fast ko slow->next kar do aur slow->next ko null
+			// iss se LL  do part me divide ho jayega
+
+
+			l1 = sortList(head) ;   // yaha resursive diveide kar do
+			l2 = sortList (fast)  ;
+
+			return  merge(l1 , l2) ;  // fir unlo merge kar ddo
+
+
+		}   // FOR BETTER UNDERSTANDING YTHING LIKE MERGE TWO ARRY SAMAJKH AA JAYEGA
+	}
+	ListNode* merge(ListNode* l1 , ListNode* l2) {
+		ListNode * dummy = ListNode(0) ;   // EK dummy  node liya hain
+		ListNode * current = dummy ;  // ek curremnt node liya hain
+		while (l1 && l2) {
+			if (l1->val < l2->val) {  // l1 smaller hain to current is pointing to l1
+				current->next = l1 ;
+				l1 = l1->next ;
+				current = current->next ;
+			}
+			else {
+				current->next = l2->next ;  // currennt is pointing to l2
+				l2 = l2->next ;
+				current = current->next ;
+			}
+		}
+
+		while (l1 != NULL) {   // l2 null hain to current -> next ko sidha l1 se  point kar do
+			current->next = l1 ;
+		}
+		while (l2 != NULL) {
+			current->next = NULL ;   // yaha  l2 se connect kar do
+		}
+
+		return  dummy ->next ;   // yaha dummy ka use kiya hain dummy->next return kar dooo .
+
+	}
+};
+
+################################333

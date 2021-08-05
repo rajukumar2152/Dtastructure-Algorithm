@@ -154,29 +154,29 @@ int main() {
 
 
 // gfg  solution pata nahi unke site [ar copy nahi ho  raha hain  abki bad me  dekhta hun kya problem  aa rahi hain
-class Solution {
-public:
-	bool cyclecheck_by_dfs(vector<int> adj[] , int src , bool visited[] ) {
-		if (visited[src] == true )
-			return true ;
+// class Solution {
+// public:
+// 	bool cyclecheck_by_dfs(vector<int> adj[] , int src , bool visited[] ) {
+// 		if (visited[src] == true )
+// 			return true ;
 
-		for (auto i : adj[src]) {
+// 		for (auto i : adj[src]) {
 
-			if (visited[i] != true) {
-				visited[i] = true ;
-				cyclecheck_by_dfs(adj , i , visited )
-			}
-		}
-		return false ;
-	}
-	bool isCyclic(int V, vector<int> adj[]) {
-		bool visited[V] ;
-		for (int i = 0 ; i < V ; i++) {
-			visited[i] = false ;
-		}
-		int src = adj[0] ;
-		return cyclecheck_by_dfs(adj , src , visited);
+// 			if (visited[i] != true) {
+// 				visited[i] = true ;
+// 				cyclecheck_by_dfs(adj , i , visited )
+// 			}
+// 		}
+// 		return false ;
+// 	}
+// 	bool isCyclic(int V, vector<int> adj[]) {
+// 		bool visited[V] ;
+// 		for (int i = 0 ; i < V ; i++) {
+// 			visited[i] = false ;
+// 		}
+// 		int src = adj[0] ;
+// 		return cyclecheck_by_dfs(adj , src , visited);
 
 
-	}
-};
+// 	}
+// };

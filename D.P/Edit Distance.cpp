@@ -85,8 +85,8 @@ int editDistDP(string str1, string str2, int m, int n)
 			// possibilities and find the minimum
 			else
 				dp[i][j] = 1 + min(dp[i][j - 1], // Insert
-								dp[i - 1][j], // Remove
-								dp[i - 1][j - 1]); // Replace
+				                   dp[i - 1][j], // Remove
+				                   dp[i - 1][j - 1]); // Replace
 		}
 	}
 
@@ -104,3 +104,15 @@ int main()
 
 	return 0;
 }
+
+
+class Solution {
+public:
+	int minDistance(string word1, string word2) {
+		int n = word1.size() ;
+		int m = word2.size() ;
+
+		return editDistDP(word1 , word2 , n , m ) ;
+
+	}
+};

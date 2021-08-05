@@ -40,7 +40,10 @@ using namespace std;
 //     return output;
 // }
 
-// Driver Code
+// // Driver Code
+// bool min(int a , int b , int c ){
+
+// }
 int main()
 {
     // string name ,live;
@@ -87,13 +90,25 @@ int main()
     // cout << n + '4' - '0'; // - 'a';
     // cout << n + '1';
     // cout << n + '1' - '0' + 5;
-    int i = 0 ;
-    for (int i = 0 ; i < 3 ; i++) {
-        cout << "hellon=" << endl ;
-        i + 2;
-    }
-    cout << i << "value of i is " ;
-    // cout << a;
+    // int i = 0 ;
+    // for (int i = 0 ; i < 3 ; i++) {
+    //     cout << "hellon=" << endl ;
+    //     i + 2;
+    // }
+    // cout << i << "value of i is " ;
+    vector <vector<int>>v  ;
+    vector<int> test ;
+    // test = {1, 3 , 4} ;
+    // v.push_back({1, 5, 81});
+    // v.push_back(vector<int>(25));
+    // for (int i = 0 ; i < 1 ; i++) {
+    //     for (int j = 0 ; j < 3 ; j++) {
+    //         cout << v[i][j] << " ";
+    //     }
+    //     cout << endl ;
+    // }    // cout << a;
+    // cout << v[0][0];
+    cout << min(min(4, 3), 1);
     return 0;
 
 }

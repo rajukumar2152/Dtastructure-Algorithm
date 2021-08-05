@@ -29,7 +29,7 @@ int  lcs(string x , string y , int n , int m ) {
 
 int main() {
     string str1 = "ABCAde";
-    string str2 = "ACa" ;
+    string str2 = "AC" ;
     //  string str1 = "geeksforgeeks";
     // string str2 = "geeksquizga" ;
     int n = str1.size();
